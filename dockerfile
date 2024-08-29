@@ -17,7 +17,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN chown -R appuser:appuser /app
 
 # Switch to the non-root user
-USER appuser
+USER 10001
 
 # Expose the port (use the port you're running Flask on)
 EXPOSE 8080
