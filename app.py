@@ -48,4 +48,4 @@ def index():
     return render_template("index.html", user=user, board=board, game_over=game_over, winner=winner, player=player, ai_turn=ai_turn, X=ttt.X, O=ttt.O, EMPTY=ttt.EMPTY)
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=8080)
