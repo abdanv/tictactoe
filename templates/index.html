@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic-Tac-Toe</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-template-rows: repeat(3, 100px);
+            gap: 5px;
+            margin: 20px auto;
+            max-width: 320px;
+        }
+        .cell {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            background-color: #f8f9fa;
+            border: 2px solid #dee2e6;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .cell:hover {
+            background-color: #e2e6ea;
+        }
+        .cell.disabled {
+            cursor: not-allowed;
+            background-color: #e9ecef;
+        }
+        .title {
+            text-align: center;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Tic-Tac-Toe</h1>
+        <form method="post">
+            {% if user is none %}
+                <div class="board">
+                    {% for row in range(3) %}
+                        {% for col in range(3) %}
+                            <button type="button" class="cell disabled" name="move">
+                            </button>
+                        {% endfor %}
+                    {% endfor %}
+                </div>            
+                <div class="text-center mb-4">
+                    <button type="submit" name="play_as_X" class="btn btn-primary btn-lg mx-2">Play as X</button>
+                    <button type="submit" name="play_as_O" class="btn btn-secondary btn-lg mx-2">Play as O</button>
+                </div>
+            {% else %}
+                <input type="hidden" name="user" value="{{ user }}">
+                <input type="hidden" name="board" value="{{ board }}">
+                <input type="hidden" name="ai_turn" value="{{ ai_turn }}">
+
+                {% if game_over %}
+                    <h2 class="text-center mb-4">{% if winner %} Game Over: {{ winner }} wins {% else %} Game Over: Tie {% endif %}</h2>
+                    <div class="text-center">
+                        <button type="submit" name="reset" class="btn btn-success btn-lg">Play Again</button>
+                    </div>
+                    <div class="board">
+                        {% for row in range(3) %}
+                            {% for col in range(3) %}
+                                <button type="submit" class="cell disabled" name="move" value="{{ row }},{{ col }}" {% if ai_turn or board[row][col] != EMPTY %}disabled{% endif %}>
+                                    {{ board[row][col] if board[row][col] != EMPTY else '' }}
+                                </button>
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <h2 class="text-center mb-4">{{ 'Your Turn' if user == player else 'Computer Thinking...' }}</h2>
+                    <div class="board">
+                        {% for row in range(3) %}
+                            {% for col in range(3) %}
+                                <button type="submit" class="cell {% if ai_turn or board[row][col] != EMPTY %}disabled{% endif %}" name="move" value="{{ row }},{{ col }}" {% if ai_turn or board[row][col] != EMPTY %}disabled{% endif %}>
+                                    {{ board[row][col] if board[row][col] != EMPTY else '' }}
+                                </button>
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endif %}
+        </form>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
